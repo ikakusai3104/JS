@@ -3,6 +3,32 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import {creatStore} from 'redux';
+
+const initialState = {
+    tasks:[]
+};
+
+const addTask = (task) => ({
+    type:'ADD_TASK',
+    payload:{
+        task
+    }
+})
+
+function tasksReducer(state = initialState, action){
+    switch(action.type){
+        case 'ADD_ TASK':
+            return{
+                ...state,
+                tasks: state.tasks.concat([action.tasks])
+            };
+        default:
+            return state;
+    }
+};
+
+const store = creatStore(tasksReducer);
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
