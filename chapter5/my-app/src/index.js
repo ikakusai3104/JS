@@ -3,18 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {creatStore} from 'redux';
-
-const initialState = {
-    tasks:[]
-};
-
-const addTask = (task) => ({
-    type:'ADD_TASK',
-    payload:{
-        task
-    }
-})
+import {createStore} from 'redux';
 
 function tasksReducer(state = initialState, action){
     switch(action.type){
@@ -28,7 +17,27 @@ function tasksReducer(state = initialState, action){
     }
 };
 
-const store = creatStore(tasksReducer);
+const store = createStore(tasksReducer);
+
+function handleChange(){
+    console.log(store.getState());
+}
+
+const unsubscribe = store.subscribe(handleChange)
+//unsubscribe()を実行すると解除される
+
+const addTask = (task) => ({
+    type:'ADD_TASK',
+    payload:{
+        task
+    }
+})
+
+store.dispatch(addTask('Storeを学ぶ'));
+
+const initialState = {
+    tasks:[]
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
