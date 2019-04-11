@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import tasksReducer from './reducers/tasks';
-import TodoApp from './compoents/TodoApp';
+import TodoApp from './compon       ents/TodoApp';
 import { createStore } from 'redux';
 
 const store = createStore(tasksReducer);
