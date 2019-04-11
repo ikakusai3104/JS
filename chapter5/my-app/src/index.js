@@ -3,21 +3,74 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import {createStore} from 'redux';
+import {createStore, replaceReducer} from 'redux';
+
+const initialState = {
+    task:'',
+    tasks:[]
+};
+
+// function addReducer(state = initialState, action) {
+//     switch (action.type) {
+//         case 'ADD_TASK':
+//             return{
+//                 ...state,
+//                 tasks:state.tasks.concat([action.payload.task])
+//             };
+//         default:
+//             return state;
+//     }
+// }
+
+// function resetReducer(state = initialState, action){
+//     switch(action.type){
+//         case 'RESET_TASK':
+//         return{
+//             ...state,
+//             tasks:[]
+//         };
+//     default:
+//         return state;
+//     }
+// }
 
 function tasksReducer(state = initialState, action){
     switch(action.type){
-        case 'ADD_ TASK':
-            return{
+        case 'INPUT_TASK':
+            return {
                 ...state,
-                tasks: state.tasks.concat([action.tasks])
+                task: action.payload.task
+            };
+        case'ADD_TASK':
+            return {
+                ...state,
+                tasks: state.tasks.concat([action.payload.task])
             };
         default:
             return state;
     }
-};
+}
 
-const store = createStore(tasksReducer);
+function TodoApp({store}){
+    const{ task, tasks } = store.getState();
+    return (
+    <div>
+        <input type="text" onChange ={(e) => store.dispatch(inputTask(e.target.value))}/>
+        <input type="button" value="add" onClick={() => store.dispatch(addTask(task))}/>
+        <ul>
+        {
+            tasks.map(function( item, i){
+                return(
+                    <li key ={i}>{item}</li>
+                );
+            })
+        }
+        </ul>
+    </div>
+    );
+}
+
+const store = createStore(resetReducer);
 
 function handleChange(){
     console.log(store.getState());
@@ -33,11 +86,23 @@ const addTask = (task) => ({
     }
 })
 
-store.dispatch(addTask('Storeを学ぶ'));
+const resetTask = (task) => ({
+    type: 'RESET_TASK',
+    payload:{
+        task
+    }
+})
 
-const initialState = {
-    tasks:[]
-};
+const inputTask = (task) => ({
+    type: 'INPUT_TASK',
+    payload: {
+        task
+    }
+})
+
+store.dispatch(resetTask('Reducerを学ぶ'));
+
+console.log(store.getState());
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
